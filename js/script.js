@@ -67,6 +67,11 @@ function mainFunc() {
             case 'gu':
                 $('#guider').fadeIn(100);
                 break;
+            case 'uga':
+                $('#sq1').on('click', function () {
+                    location.reload();
+                });
+                break;
         }
     });
     $('#signs,#result').on('mouseover', function () {
