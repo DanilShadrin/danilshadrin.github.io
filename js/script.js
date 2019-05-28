@@ -8,6 +8,7 @@ let counter = 0;
 let flagRise = true;
 let flagGame = true;
 let flagMode = true;
+let flagVert = true;
 
 function mainFunc() {
 
@@ -43,7 +44,7 @@ function mainFunc() {
             }
         });
 
-
+    // Сброс очков
     $('#reset').on('click', function () {
         localStorage.setItem('userScore', '0');
         localStorage.setItem('compScore', '0');
@@ -67,14 +68,33 @@ function mainFunc() {
                 break;
         }
     });
-
-    $('#signs').on('mouseover', function () {
+    $('#signs,#result').on('mouseover', function () {
         flagMode = true;
         $('.sliders').fadeOut(200);
         $('.menu').animate({marginLeft: '0', marginRight: '0'}, 150);
     });
 
-    // установка кнопок режима в соответствии с локалом и нажатиями клавиш
+    // Перезапуск игры
+    $('#restart').on('click', function () {
+        $('.op1')
+            .fadeOut(600, function () {
+                $('.signs').css({opacity: '100', top: '0'}).fadeIn(600);
+                $(this).css({top: '-35%'});
+                $('#fighter1').attr('src', 'images/LeftRock.png');
+                $('#fighter2').attr('src', 'images/Rock.png');
+            });
+        $('#result')
+            .fadeOut(600, function () {
+                document.getElementById('result').innerText = 'CHOOSE';
+            })
+            .fadeIn(600);
+        $('#restart').fadeOut(600);
+        flagMode = true;
+        flagGame = true;
+
+    });
+
+    // Работа с localStorage
     switch (localStorage.getItem('mode')) {
         case '2':
             $('#random').animate({backgroundColor: '#0f0f0f', color: '#ffeb00'}, 100);
@@ -94,7 +114,6 @@ function mainFunc() {
         $(this).animate({backgroundColor: '#0f0f0f', color: '#ffeb00'}, 100);
         $('#hard').animate({backgroundColor: '#ffeb00', color: '#0f0f0f'}, 100);
     });
-
     if (localStorage.getItem('userScore') !== null)
         document.getElementById('points').innerText = localStorage.getItem('userScore') + ' : ' + localStorage.getItem('compScore');
 }
@@ -121,16 +140,17 @@ function intro() {
 }
 
 function invert() {
-    if (flagRise) {
+    if (flagVert) {
         document.getElementById('title').style.color = '#ffeb00';
         document.body.style.backgroundColor = '#0f0f0f';
     }
 }
 
 function outvert() {
-    if (flagRise) {
+    if (flagVert) {
         document.getElementById('title').style.color = '#0f0f0f';
         document.body.style.backgroundColor = '#ffeb00';
+        flagVert = false;
     }
 }
 
@@ -249,7 +269,7 @@ function theGame() {
             .animate({top: '+=30%'}, 140, function () {
                 $('#fighter1').attr('src', userChoice);
                 $('#fighter2').attr('src', iChoice);
-
+                $('#restart').fadeIn(300);
                 $('#result').fadeIn(300);
             });
     });
