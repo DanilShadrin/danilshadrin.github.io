@@ -53,6 +53,10 @@ input[type="radio"] {
     font-family: "Apple osaka unicode", sans-serif;
     left: 0;
 }
+#uga{
+    cursor: pointer;
+
+}
 
 #score {
     right: 0;
@@ -223,12 +227,12 @@ input[type="radio"] {
     }
 
     #result {
-        font-size: 350%;
+        font-size: 380%;
     }
 
     #restart {
-        font-size: 160%;
-        top: 30%;
+        font-size: 190%;
+        top: 28%;
     }
 
     .signs, .op1 {
@@ -246,5 +250,14 @@ input[type="radio"] {
     #sq1 {
         font-size: 180%;
     }
+}
+
+@media (max-height: 700px) {
+
+    #restart {
+
+        top: 37.5%;
+    }
+
 }
 
