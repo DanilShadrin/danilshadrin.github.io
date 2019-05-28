@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>じゃんけん</title>
+    <link type="text/css" rel="stylesheet" href="screen.css">
+    <link href="images/icon.ico" type="image/ico" rel="shortcut icon"/>
+    <script type='text/javascript' src='js/jquery-3.4.1.min.js'></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script
+            src="js/jquery-3.4.1.min.js"
+            type="text/javascript"></script>
+    <script
+            src="js/jquery-ui.min.js"
+            type="text/javascript"></script>
+</head>
+
+<body>
+<h1 id="title">ROCK</h1>
+
+
+<div id="result">CHOOSE</div>
+
+<div id="signs">
+    <img class="signs" id="signImg1" about="1" src="images/Rock.png" ondragstart="return false;">
+    <img class="signs" id="signImg2" about="2" src="images/Scissors.png" ondragstart="return false;">
+    <img class="signs" id="signImg3" about="3" src="images/Paper.png" ondragstart="return false;">
+    <img class="op1" id="fighter1" about="1" src="images/LeftRock.png" ondragstart="return false;">
+    <img class="op1" id="fighter2" about="2" src="images/Rock.png" ondragstart="return false;">
+</div>
+
+
+<div id="sq1" class="square" >じゃんけん</div>
+
+<div id="score" class="square" >
+    <a id="sco" class="menu">SCORE</a>
+    <div id="scoreSliders">
+        <a id="points" class="sliders">0 : 0</a>
+        <a id="reset" class="sliders">RESET</a>
+    </div>
+</div>
+
+<div id="mode" class="square" >
+    <a id="mo" class="menu">MODE</a>
+    <div id="modeSliders">
+        <a id="hard" class="sliders">HARD</a>
+        <a id="random" class="sliders">RANDOM</a>
+    </div>
+</div>
+
+<div id="guide" class="square" >
+    <a id="gu" class="menu">GUIDE</a>
+    <div id="guideSliders">
+        <a id="guider" class="sliders">JustThink, Jerkface</a>
+    </div>
+</div>
+
+
+<embed src="RPS.mp3" id="audio">
+
+</body>
+</html>
