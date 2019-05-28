@@ -14,10 +14,11 @@ body {
     user-select: none;
 }
 
+/*
 embed {
     visibility: hidden;
 }
-
+*/
 input[type="radio"] {
 
 }
@@ -246,3 +247,4 @@ input[type="radio"] {
         font-size: 180%;
     }
 }
+
