@@ -1,7 +1,7 @@
-window.onload = function () {
+$(window).load(function () {
     $('#name').html(localStorage.getItem('name'));
-};
-window.onload = mainFunc;
+    mainFunc();
+});
 
 let rpsInt;
 let counter = 0;
@@ -73,6 +73,7 @@ function mainFunc() {
         $('.sliders').fadeOut(200);
         $('.menu').animate({marginLeft: '0', marginRight: '0'}, 150);
     });
+
 
     // Перезапуск игры
     $('#restart').on('click', function () {
