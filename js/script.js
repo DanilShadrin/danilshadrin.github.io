@@ -76,7 +76,6 @@ function mainFunc() {
     });
 
 
-
     // Перезапуск игры
     $('#restart').on('click', function () {
         $('.op1')
@@ -172,7 +171,8 @@ function rise() {
             $('#result').fadeIn(600);
             flagRise = false;
         }, 200);
-
+        document.getElementById('audio').pause();
+        document.getElementById('audio').currentTime = 0;
     }
 }
 
