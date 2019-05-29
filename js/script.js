@@ -1,8 +1,5 @@
-window.onload = function () {
-    $('#name').html(localStorage.getItem('name'));
-};
-
 window.onload = mainFunc;
+
 
 let rpsInt;
 let counter = 0;
@@ -10,8 +7,12 @@ let flagRise = true;
 let flagGame = true;
 let flagMode = true;
 let flagVert = true;
+let flagWin = true;
+let tactic = 1;
+let withOneSign = 0;
 
 function mainFunc() {
+
 
     rpsInt = setInterval(intro, 800);
 
@@ -191,6 +192,7 @@ function theGame() {
     let coin1 = parseInt(this.getAttribute("about"));
     let coin2 = 1;
     let userChoice, iChoice;
+    // Выбор картинки знака игрока
     switch (coin1) {
         case 1:
             userChoice = 'images/LeftRock.png';
@@ -203,26 +205,125 @@ function theGame() {
     }
 
 
-    if (localStorage.getItem('mode') === '2')
+    // Выбор компьютера
+    if (localStorage.getItem('mode') === '2' || localStorage.getItem('userScore') === null && localStorage.getItem('compScore') === null)
         switch (Math.floor(Math.random() * 3) + 1) {
             case 1:
-                iChoice = 'images/Rock.png';
                 coin2 = 1;
                 break;
             case 2:
-                iChoice = 'images/Scissors.png';
                 coin2 = 2;
                 break;
             case 3:
-                iChoice = 'images/Paper.png';
                 coin2 = 3;
         }
     else {
+        if (localStorage.getItem('loses') >= '3') {
+            localStorage.setItem('tactic', Math.floor(Math.random() * 3) + 1);
+            localStorage.setItem('loses', '0');
+        }
+        switch (localStorage.getItem('tactic')) {
+            case '1':
+                switch (localStorage.getItem('compPrevCoin')) {
+                    case '1':
+                        coin2 = 2;
+                        break;
+                    case '2':
+                        coin2 = 3;
+                        break;
+                    case '3':
+                        coin2 = 1;
+                        break;
+                }
+                break;
+            case '2':
+                if (flagWin) {
+                    switch (localStorage.getItem('compPrevCoin')) {
+                        case '1':
+                            coin2 = 2;
+                            break;
+                        case '2':
+                            coin2 = 3;
+                            break;
+                        case '3':
+                            coin2 = 1;
+                            break;
+                    }
+                } else {
+                    switch (localStorage.getItem('compPrevCoin')) {
+                        case '1':
+                            coin2 = 3;
+                            break;
+                        case '2':
+                            coin2 = 1;
+                            break;
+                        case '3':
+                            coin2 = 2;
+                            break;
+                    }
+                }
+                break;
+            case '3':
+                if (withOneSign < 3) {
+                    switch (localStorage.getItem('userPrevCoin')) {
+                        case '1':
+                            coin2 = 3;
+                            break;
+                        case '2':
+                            coin2 = 1;
+                            break;
+                        case '3':
+                            coin2 = 2;
+                            break;
+                    }
+                } else {
+                    if (flagWin)
+                        switch (localStorage.getItem('compPrevCoin')) {
+                            case '1':
+                                coin2 = 3;
+                                break;
+                            case '2':
+                                coin2 = 1;
+                                break;
+                            case '3':
+                                coin2 = 2;
+                                break;
+                        }
+                    else {
+                        switch (localStorage.getItem('userPrevCoin')) {
+                            case '1':
+                                coin2 = 3;
+                                break;
+                            case '2':
+                                coin2 = 1;
+                                break;
+                            case '3':
+                                coin2 = 2;
+                                break;
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    switch (coin2) {
+        case 1:
+            iChoice = 'images/Rock.png';
+            break;
+        case 2:
+            iChoice = 'images/Scissors.png';
+            break;
+        case 3:
+            iChoice = 'images/Paper.png';
 
     }
 
+    // Вывод результата
+    if (coin1 === coin2) {
+        document.getElementById('result').innerText = 'DRAW';
 
-    if (coin1 === coin2) document.getElementById('result').innerText = 'DRAW';
+    }
     else switch (coin1) {
         case 1:
             if (coin2 === 2) document.getElementById('result').innerText = 'WIN';
@@ -236,18 +337,20 @@ function theGame() {
             if (coin2 === 1) document.getElementById('result').innerText = 'WIN';
             else document.getElementById('result').innerText = 'LOSE';
     }
-
-
     let userScore = localStorage.getItem('userScore'), compScore = localStorage.getItem('compScore');
+    // Вывод очков
     if (userScore === null)
         switch (document.getElementById('result').innerText) {
             case 'WIN':
                 localStorage.setItem('userScore', '1');
                 localStorage.setItem('compScore', '0');
+
+
                 break;
             case 'LOSE':
                 localStorage.setItem('userScore', '0');
                 localStorage.setItem('compScore', '1');
+
                 break;
             default:
                 localStorage.setItem('userScore', '0');
@@ -258,14 +361,28 @@ function theGame() {
             case 'WIN':
                 userScore = parseInt(userScore) + 1;
                 localStorage.setItem('userScore', userScore);
+                withOneSign++;
+                if (localStorage.getItem('loses') === null)
+                    localStorage.setItem('loses', '0');
+                let loses = parseInt(localStorage.getItem('loses'));
+                loses++;
+                localStorage.setItem('loses', loses);
+                flagWin = false;
                 break;
             case 'LOSE':
                 compScore = parseInt(compScore) + 1;
                 localStorage.setItem('compScore', compScore);
+                withOneSign = 0;
+                localStorage.setItem('loses', '0');
+                flagWin = true;
                 break;
         }
-
     document.getElementById('points').innerText = localStorage.getItem('userScore') + ' : ' + localStorage.getItem('compScore');
+
+    // Запоминаем выбор игрока и компа, как предыдущие
+    localStorage.setItem('userPrevCoin', coin1);
+    localStorage.setItem('compPrevCoin', coin2);
+
 
     // Появление кулаков
     $('.op1').fadeIn(200, function () {
