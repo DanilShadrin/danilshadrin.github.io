@@ -177,8 +177,8 @@ function rise() {
             $('#result').fadeIn(600);
             flagRise = false;
         }, 200);
-        document.getElementById('audio').pause();
-        document.getElementById('audio').currentTime = 0;
+        //document.getElementById('audio').pause();
+        //document.getElementById('audio').currentTime = 0;
     }
 }
 
@@ -218,10 +218,27 @@ function theGame() {
                 coin2 = 3;
         }
     else {
-        if (localStorage.getItem('loses') >= '3') {
-            localStorage.setItem('tactic', Math.floor(Math.random() * 3) + 1);
+        if (localStorage.getItem('tactic') === null)
+            localStorage.setItem('tactic', Math.floor((Math.random() * 4) + 1));
+        if (localStorage.getItem('loses') >= '3' || localStorage.getItem('draws') >= 3) {
+            switch (localStorage.getItem('tactic')) {
+                case '1':
+                    localStorage.setItem('tactic', '2');
+                    break;
+                case '2':
+                    localStorage.setItem('tactic', '3');
+                    break;
+                case '3':
+                    localStorage.setItem('tactic', '4');
+                    break;
+                case '4':
+                    localStorage.setItem('tactic', '1');
+
+            }
+
             localStorage.setItem('loses', '0');
         }
+        // Тактики
         switch (localStorage.getItem('tactic')) {
             case '1':
                 switch (localStorage.getItem('compPrevCoin')) {
@@ -235,6 +252,18 @@ function theGame() {
                         coin2 = 1;
                         break;
                 }
+                if (!flagWin)
+                    switch (localStorage.getItem('compPrevCoin')) {
+                        case '1':
+                            coin2 = 1;
+                            break;
+                        case '2':
+                            coin2 = 2;
+                            break;
+                        case '3':
+                            coin2 = 3;
+                            break;
+                    }
                 break;
             case '2':
                 if (flagWin) {
@@ -249,7 +278,8 @@ function theGame() {
                             coin2 = 1;
                             break;
                     }
-                } else {
+                }
+                if (!flagWin) {
                     switch (localStorage.getItem('compPrevCoin')) {
                         case '1':
                             coin2 = 3;
@@ -261,6 +291,8 @@ function theGame() {
                             coin2 = 2;
                             break;
                     }
+                } else {
+                    coin2 = Math.floor(Math.random() * 3) + 1;
                 }
                 break;
             case '3':
@@ -304,9 +336,51 @@ function theGame() {
                     }
                 }
                 break;
+            case '4':
+                if (withOneSign < 2) {
+                    switch (localStorage.getItem('userPrevCoin')) {
+                        case '1':
+                            coin2 = 3;
+                            break;
+                        case '2':
+                            coin2 = 1;
+                            break;
+                        case '3':
+                            coin2 = 2;
+                            break;
+                    }
+                } else {
+                    if (flagWin)
+                        switch (localStorage.getItem('compPrevCoin')) {
+                            case '1':
+                                coin2 = 3;
+                                break;
+                            case '2':
+                                coin2 = 1;
+                                break;
+                            case '3':
+                                coin2 = 2;
+                                break;
+                        }
+                    else {
+                        switch (localStorage.getItem('userPrevCoin')) {
+                            case '1':
+                                coin2 = 3;
+                                break;
+                            case '2':
+                                coin2 = 1;
+                                break;
+                            case '3':
+                                coin2 = 2;
+                                break;
+                        }
+                    }
+                }
+                break;
         }
     }
 
+    // Кладем каритнку в соответсвии с выбором компьютера
     switch (coin2) {
         case 1:
             iChoice = 'images/Rock.png';
@@ -338,7 +412,7 @@ function theGame() {
             else document.getElementById('result').innerText = 'LOSE';
     }
     let userScore = localStorage.getItem('userScore'), compScore = localStorage.getItem('compScore');
-    // Вывод очков
+    // Вывод очков + изменение переменных проигрыша и прочее
     if (userScore === null)
         switch (document.getElementById('result').innerText) {
             case 'WIN':
@@ -361,12 +435,16 @@ function theGame() {
             case 'WIN':
                 userScore = parseInt(userScore) + 1;
                 localStorage.setItem('userScore', userScore);
-                withOneSign++;
+                if (localStorage.getItem('userPrevCoin') === coin1.toString())
+                    withOneSign++;
+                else
+                    withOneSign = 0;
                 if (localStorage.getItem('loses') === null)
                     localStorage.setItem('loses', '0');
                 let loses = parseInt(localStorage.getItem('loses'));
                 loses++;
                 localStorage.setItem('loses', loses);
+                localStorage.setItem('draws', '0');
                 flagWin = false;
                 break;
             case 'LOSE':
@@ -374,8 +452,15 @@ function theGame() {
                 localStorage.setItem('compScore', compScore);
                 withOneSign = 0;
                 localStorage.setItem('loses', '0');
+                localStorage.setItem('draws', '0');
                 flagWin = true;
                 break;
+            default:
+                if (localStorage.getItem('draws') === null)
+                    localStorage.setItem('draws', '0');
+                let draws = parseInt(localStorage.getItem('draws'));
+                draws++;
+                localStorage.setItem('draws', draws);
         }
     document.getElementById('points').innerText = localStorage.getItem('userScore') + ' : ' + localStorage.getItem('compScore');
 
