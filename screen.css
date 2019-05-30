@@ -14,14 +14,13 @@ body {
     user-select: none;
 }
 
-/*
+
 embed {
     visibility: hidden;
 }
-*/
-input[type="radio"] {
 
-}
+
+
 
 #title {
     font-size: 950%;
@@ -117,7 +116,9 @@ input[type="radio"] {
     cursor: auto;
 
 }
-
+#guider{
+    cursor: auto;
+}
 #signs {
     position: absolute;
     height: 50%;
@@ -183,7 +184,6 @@ input[type="radio"] {
     font-size: 240%;
     font-family: "Reforma Grotesk Demi", sans-serif;
     color: #0f0f0f;
-
     cursor: pointer;
     display: none;
     top: 33%;
@@ -232,7 +232,7 @@ input[type="radio"] {
 
     #restart {
         font-size: 190%;
-        top: 28%;
+        top: 2%;
     }
 
     .signs, .op1 {
@@ -261,3 +261,13 @@ input[type="radio"] {
 
 }
 
+html {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+/*Правило только для Firefox*/
+@-moz-document url-prefix() {
+    body {
+        font-weight: lighter !important;
+    }
+}
